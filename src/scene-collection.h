@@ -59,24 +59,8 @@ private:
     //
     void add_scenes(Canvas& canvas)
     {
-        scenes_.push_back(new SceneDefaultOptions(canvas));
-        scenes_.push_back(new SceneBuild(canvas));
-        scenes_.push_back(new SceneTexture(canvas));
-        scenes_.push_back(new SceneShading(canvas));
-        scenes_.push_back(new SceneConditionals(canvas));
-        scenes_.push_back(new SceneFunction(canvas));
-        scenes_.push_back(new SceneLoop(canvas));
-        scenes_.push_back(new SceneBump(canvas));
-        scenes_.push_back(new SceneEffect2D(canvas));
-        scenes_.push_back(new ScenePulsar(canvas));
-        scenes_.push_back(new SceneDesktop(canvas));
-        scenes_.push_back(new SceneBuffer(canvas));
-        scenes_.push_back(new SceneIdeas(canvas));
-        scenes_.push_back(new SceneTerrain(canvas));
-        scenes_.push_back(new SceneJellyfish(canvas));
+
         scenes_.push_back(new SceneShadow(canvas));
-        scenes_.push_back(new SceneRefract(canvas));
-        scenes_.push_back(new SceneClear(canvas));
 
     }
 };

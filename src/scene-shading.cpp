@@ -58,9 +58,9 @@ SceneShading::SceneShading(Canvas &pCanvas) :
         optionValues += curName;
         doSeparator = true;
     }
-    options_["shading"] = Scene::Option("shading", "gouraud",
+    options_["shading"] = Scene::Option("shading", "blinn-phong-inf",
                                         "Which shading method to use",
-                                        "gouraud,blinn-phong-inf,phong,cel");
+                                        "blinn-phong-inf,phong");
     options_["num-lights"] = Scene::Option("num-lights", "1",
             "The number of lights applied to the scene (phong only)");
     options_["model"] = Scene::Option("model", "cat", "Which model to use",

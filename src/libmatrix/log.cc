@@ -114,6 +114,26 @@ android_vlog(int prio, const char *tag, const char *fmt, va_list ap)
 }
 #endif
 
+#ifdef OHOS
+
+#include <hilog/log.h>
+
+static void
+ohos_vlog(int prio, const char *tag, const char *fmt, va_list ap)
+{
+    va_list aq;
+    va_copy(aq, ap);
+
+    char local_msg[1024];
+    vsnprintf(local_msg, sizeof(local_msg), fmt, aq);
+ 
+    OH_LOG_Print(LOG_APP, LOG_INFO, 0xFF00, tag, "%{public}s", local_msg);
+ 
+
+    va_end(aq);
+}
+#endif
+
 void
 Log::info(const char *fmt, ...)
 {
@@ -121,14 +141,9 @@ Log::info(const char *fmt, ...)
     const string& prefix(do_debug_ ? infoprefix : empty);
     va_list ap;
     va_start(ap, fmt);
-
-#ifndef ANDROID
-    static const string& infocolor(isatty(fileno(stdout)) ? terminal_color_cyan : empty);
-    const string& color(do_debug_ ? infocolor : empty);
-    print_prefixed_message(std::cout, color, prefix, fmt, ap);
-#else
-    android_vlog(ANDROID_LOG_INFO, appname_.c_str(), fmt, ap);
-#endif
+    
+    
+    ohos_vlog(0, appname_.c_str(), fmt, ap);
 
     if (extra_out_)
         print_prefixed_message(*extra_out_, empty, prefix, fmt, ap);

@@ -49,6 +49,8 @@
 #include "native-state-win32.h"
 #elif GLMARK2_USE_NULL
 #include "native-state-null.h"
+#elif GLMARK2_USE_OHOS
+#include "native-state-ohos.h"
 #endif
 
 #if GLMARK2_USE_EGL
@@ -157,6 +159,11 @@ std::string get_full_command_line(int argc, char *argv[])
     return ss.str();
 }
 
+extern "C" {
+    extern int g_width;
+    extern int g_height;
+}
+
 int
 main(int argc, char *argv[])
 {
@@ -174,11 +181,15 @@ main(int argc, char *argv[])
     NativeStateWin32 native_state;
 #elif GLMARK2_USE_NULL
     NativeStateNull native_state;
+#elif GLMARK2_USE_OHOS
+    NativeStateOHOS native_state;
 #endif
 
     if (!Options::parse_args(argc, argv))
         return 1;
 
+    Options::size = std::pair<int,int>(g_width, g_height);
+        
     /* Initialize Log class */
     Log::init(std::filesystem::path(argv[0]).stem().string(), Options::show_debug);
 
@@ -228,6 +239,7 @@ main(int argc, char *argv[])
     CanvasGeneric canvas(native_state, gl_state, Options::size.first, Options::size.second);
 
     canvas.offscreen(Options::offscreen);
+    canvas.offscreen(1);
 
     canvas.visual_config(Options::visual_config);
 

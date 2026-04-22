@@ -326,6 +326,9 @@ GLStateEGL::init_display(void* native_display, GLVisualConfig& visual_config)
     if (!egl_lib_.open("libEGL.dll")) {
 #else
     if (!egl_lib_.open_from_alternatives({
+#if GLMARK2_USE_OHOS
+            "libEGL.so.1",
+#endif
 #if GLMARK2_USE_DISPMANX
             "libbrcmEGL.so",
 #endif
@@ -583,7 +586,7 @@ GLStateEGL::gotValidDisplay()
         egl_query_string(EGL_NO_DISPLAY, EGL_EXTENSIONS);
 
     if (GLMARK2_NATIVE_EGL_DISPLAY_ENUM != 0 && supported_extensions
-        && strstr(supported_extensions, "EGL_EXT_platform_base"))
+        /*&& strstr(supported_extensions, "EGL_EXT_platform_base")*/)
     {
         Log::debug("Using eglGetPlatformDisplayEXT()\n");
         PFNEGLGETPLATFORMDISPLAYEXTPROC egl_get_platform_display =
@@ -647,7 +650,7 @@ GLStateEGL::gotValidDisplay()
 #endif
 #elif GLMARK2_USE_GL
     EGLenum apiType(EGL_OPENGL_API);
-    std::initializer_list<const char *> libNames = { "libGL.so", "libGL.so.1" };
+    std::initializer_list<const char *> libNames = { "libOpenGL.so" };
     if (!GLAD_EGL_VERSION_1_4) {
         Log::error("EGL version %d.%d does not support the OpenGL API\n",
                    egl_major, egl_minor);
